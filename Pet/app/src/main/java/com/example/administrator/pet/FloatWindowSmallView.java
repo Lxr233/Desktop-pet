@@ -159,12 +159,12 @@ public class FloatWindowSmallView extends LinearLayout {
     }
 
     /**
-     * 更新View的显示状态，判断是显示悬浮窗还是小火箭。
+     * 更新View的显示状态，判断是否拎起。
      */
     private void updateViewStatus() {
         if (isPressed ) {
             img.setBackgroundResource(R.drawable.take);
-            mParams.x = (int)(xInScreen - imgWidth/2);
+            mParams.x = (int)(xInScreen -2* imgWidth/3);
             mParams.y = (int)yInScreen;
             windowManager.updateViewLayout(this, mParams);
 
@@ -186,7 +186,7 @@ public class FloatWindowSmallView extends LinearLayout {
      * 更新小悬浮窗在屏幕中的位置。
      */
     private void updateViewPosition() {
-        mParams.x = (int) (xInScreen - imgWidth/2);
+        mParams.x = (int) (xInScreen - imgWidth/3*2);
         mParams.y = (int) (yInScreen );
         windowManager.updateViewLayout(this, mParams);
     }
@@ -223,7 +223,6 @@ public class FloatWindowSmallView extends LinearLayout {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 mParams.y = (int)(float) animation.getAnimatedValue();
-                System.out.println(mParams.y);
                 windowManager.updateViewLayout(FloatWindowSmallView.this, mParams);
             }
         });
@@ -231,8 +230,12 @@ public class FloatWindowSmallView extends LinearLayout {
         anim.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
+
                 //帧动画播放
-                img.setBackgroundResource(R.drawable.anim_run);
+                if(endX == 0)
+                    img.setBackgroundResource(R.drawable.walk_left);
+                else
+                    img.setBackgroundResource(R.drawable.walk_right);
                 final AnimationDrawable runFrame = (AnimationDrawable) img.getBackground();
                 runFrame.start();
 
@@ -242,7 +245,7 @@ public class FloatWindowSmallView extends LinearLayout {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
                         mParams.x = (int) (float) animation.getAnimatedValue();
-                        System.out.println(mParams.x);
+
                         windowManager.updateViewLayout(FloatWindowSmallView.this, mParams);
                     }
                 });
@@ -251,7 +254,7 @@ public class FloatWindowSmallView extends LinearLayout {
                 runAnim.addListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                        System.out.println("stop");
+
                         runFrame.stop();
                         img.setBackgroundResource(R.drawable.bg_small);
                     }
