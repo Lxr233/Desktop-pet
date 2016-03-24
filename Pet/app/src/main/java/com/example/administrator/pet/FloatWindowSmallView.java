@@ -99,6 +99,11 @@ public class FloatWindowSmallView extends LinearLayout {
     */
     private int screenHeight,screenWidth;
 
+    //动画的定义，定义成全局以便在事件回调的时候能对动画进行操作
+    private ValueAnimator anim;
+    private AnimationDrawable runFrame;
+    private ValueAnimator runAnim;
+
 
 
     public FloatWindowSmallView(Context context) {
@@ -127,17 +132,27 @@ public class FloatWindowSmallView extends LinearLayout {
             case MotionEvent.ACTION_DOWN:
                 // 手指按下时记录必要数据,纵坐标的值都需要减去状态栏高度
                 isPressed = true;
+                if(anim!=null){
+                    anim.cancel();
+                    runAnim.cancel();
+                    runFrame.stop();
+                }
                 xInView = event.getX();
                 yInView = event.getY();
                 xDownInScreen = event.getRawX();
                 yDownInScreen = event.getRawY() - getStatusBarHeight();
                 xInScreen = event.getRawX();
                 yInScreen = event.getRawY() - getStatusBarHeight();
-                updateViewStatus();
                 break;
             case MotionEvent.ACTION_MOVE:
+                if(anim!=null){
+                    anim.cancel();
+                    runAnim.cancel();
+                    runFrame.stop();
+                }
                 xInScreen = event.getRawX();
                 yInScreen = event.getRawY() - getStatusBarHeight();
+                updateViewStatus();
                 // 手指移动的时候更新小悬浮窗的位置
                 updateViewPosition();
                 break;
@@ -218,7 +233,7 @@ public class FloatWindowSmallView extends LinearLayout {
         }
 
 
-        ValueAnimator anim = ValueAnimator.ofObject(new animEvaluator(), startY, endY);
+        anim = ValueAnimator.ofObject(new animEvaluator(), startY, endY);
         anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -236,11 +251,11 @@ public class FloatWindowSmallView extends LinearLayout {
                     img.setBackgroundResource(R.drawable.walk_left);
                 else
                     img.setBackgroundResource(R.drawable.walk_right);
-                final AnimationDrawable runFrame = (AnimationDrawable) img.getBackground();
+                runFrame = (AnimationDrawable) img.getBackground();
                 runFrame.start();
 
                 //属性动画控制位移
-                ValueAnimator runAnim = ValueAnimator.ofObject(new animEvaluator(), startX, endX);
+                runAnim = ValueAnimator.ofObject(new animEvaluator(), startX, endX);
                 runAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
