@@ -116,7 +116,7 @@ public class FloatWindowSmallView extends LinearLayout {
         img = (ImageView) findViewById(R.id.img_small);
         imgWidth = img.getLayoutParams().width;
         imgHeigth = img.getLayoutParams().height;
-        img.setBackgroundResource(R.drawable.bg_small);
+        img.setBackgroundResource(R.drawable.pika);
 
         //获取屏幕大小
         DisplayMetrics dm = new DisplayMetrics();
@@ -184,7 +184,7 @@ public class FloatWindowSmallView extends LinearLayout {
             windowManager.updateViewLayout(this, mParams);
 
         } else if (!isPressed) {
-            img.setBackgroundResource(R.drawable.bg_small);
+            img.setBackgroundResource(R.drawable.pika);
         }
     }
 
@@ -271,7 +271,7 @@ public class FloatWindowSmallView extends LinearLayout {
                     public void onAnimationEnd(Animator animation) {
 
                         runFrame.stop();
-                        img.setBackgroundResource(R.drawable.bg_small);
+                        img.setBackgroundResource(R.drawable.pika);
                     }
                 });
             }
