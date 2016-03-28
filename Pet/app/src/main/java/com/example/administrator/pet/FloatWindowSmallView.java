@@ -86,6 +86,9 @@ public class FloatWindowSmallView extends LinearLayout {
      */
     private boolean isPressed;
 
+    //记录宠物当前是否贴边隐藏
+    private boolean isHide;
+
     //宠物控件
     private ImageView img;
 
@@ -124,6 +127,8 @@ public class FloatWindowSmallView extends LinearLayout {
         screenWidth = dm.widthPixels;
         screenHeight = dm.heightPixels - getStatusBarHeight();
 
+        isHide = false;
+
     }
 
     @Override
@@ -143,8 +148,10 @@ public class FloatWindowSmallView extends LinearLayout {
                 yDownInScreen = event.getRawY() - getStatusBarHeight();
                 xInScreen = event.getRawX();
                 yInScreen = event.getRawY() - getStatusBarHeight();
+                updateViewStatus();
                 break;
             case MotionEvent.ACTION_MOVE:
+                isHide = false;
                 if(anim!=null){
                     anim.cancel();
                     runAnim.cancel();
@@ -162,7 +169,14 @@ public class FloatWindowSmallView extends LinearLayout {
                 if (xDownInScreen == xInScreen && yDownInScreen == yInScreen) {
                     openBigWindow();
                 }
+                else if (xInScreen < screenWidth*1/4){  //当在这个位置放手时宠物贴边隐藏
+                    hideLeft();
+                }
+                else if(xInScreen > screenWidth*3/4){
+                    hideRight();
+                }
                 else {
+                    isHide = false;
                     startAnimation();
                     updateViewStatus();
                 }
@@ -173,12 +187,34 @@ public class FloatWindowSmallView extends LinearLayout {
         return true;
     }
 
+    private void hideLeft() {
+        isHide = true;
+        img.setBackgroundResource(R.drawable.pika_hide_left);
+        mParams.x = 0;
+        mParams.y = (int)yInScreen;
+        windowManager.updateViewLayout(this, mParams);
+    }
+
+    private void hideRight() {
+        isHide = true;
+        img.setBackgroundResource(R.drawable.pika_hide_right);
+        mParams.x = screenWidth ;
+        mParams.y = (int)yInScreen;
+        windowManager.updateViewLayout(this, mParams);
+    }
+
     /**
      * 更新View的显示状态，判断是否拎起。
      */
     private void updateViewStatus() {
-        if (isPressed ) {
-            img.setBackgroundResource(R.drawable.take);
+        if(isHide&&isPressed) {
+            if(xInScreen>screenWidth*1/2)
+                img.setBackgroundResource(R.drawable.pika_show_right);
+            else
+                img.setBackgroundResource(R.drawable.pika_show_left);
+        }
+        else if (isPressed&&!isHide ) {
+            img.setBackgroundResource(R.drawable.pika_take);
             mParams.x = (int)(xInScreen -2* imgWidth/3);
             mParams.y = (int)yInScreen;
             windowManager.updateViewLayout(this, mParams);
