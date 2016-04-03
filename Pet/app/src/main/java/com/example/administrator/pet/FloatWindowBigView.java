@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import com.demo.floatwindowdemo.R;
 
 /**
- * Created by Administrator on 2016/3/16.
+ * Created by Lxr on 2016/3/16.
  */
 public class FloatWindowBigView extends LinearLayout {
 

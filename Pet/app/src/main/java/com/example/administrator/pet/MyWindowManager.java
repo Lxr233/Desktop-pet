@@ -18,7 +18,7 @@ import com.demo.floatwindowdemo.R;
 
 
 /**
- * Created by Administrator on 2016/3/16.
+ * Created by Lxr on 2016/3/16.
  */
 public class MyWindowManager {
 
@@ -26,6 +26,11 @@ public class MyWindowManager {
      * 小悬浮窗View的实例
      */
     private static FloatWindowSmallView smallWindow;
+
+    /**
+     * 消息悬浮窗View的实例
+     */
+    private static FloatWindowMSGView MSGWindow;
 
     /**
      * 大悬浮窗View的实例
@@ -38,6 +43,11 @@ public class MyWindowManager {
     private static LayoutParams smallWindowParams;
 
     /**
+     * 消息悬浮窗View的参数
+     */
+    private static LayoutParams MSGWindowParams;
+
+    /**
      * 大悬浮窗View的参数
      */
     private static LayoutParams bigWindowParams;
@@ -47,10 +57,6 @@ public class MyWindowManager {
      */
     private static WindowManager mWindowManager;
 
-    /**
-     * 用于获取手机可用内存
-     */
-    private static ActivityManager mActivityManager;
 
     /**
      * 创建一个小悬浮窗。初始位置为屏幕的右部中间位置。
@@ -78,6 +84,47 @@ public class MyWindowManager {
             }
             smallWindow.setParams(smallWindowParams);
             windowManager.addView(smallWindow, smallWindowParams);
+        }
+    }
+
+    /**
+     * 创建一个消息悬浮窗，位置为当前小悬浮窗位置。
+     *
+     * @param context
+     *            必须为应用程序的Context.
+     */
+    public static void createMSGWindow(Context context,String text, int x,int y) {
+        WindowManager windowManager = getWindowManager(context);
+        if (MSGWindow == null) {
+            MSGWindow = new FloatWindowMSGView(context,text);
+            if (MSGWindowParams == null) {
+                MSGWindowParams = new LayoutParams();
+                MSGWindowParams.type = LayoutParams.TYPE_PHONE;
+                MSGWindowParams.format = PixelFormat.RGBA_8888;
+                MSGWindowParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
+                        | LayoutParams.FLAG_NOT_FOCUSABLE;
+                MSGWindowParams.gravity = Gravity.LEFT | Gravity.TOP;
+                MSGWindowParams.width = FloatWindowMSGView.viewWidth;
+                MSGWindowParams.height = FloatWindowMSGView.viewHeight;
+                MSGWindowParams.x = x;
+                MSGWindowParams.y = y;
+            }
+            windowManager.addView(MSGWindow, MSGWindowParams);
+        }
+        MSGWindow.setParams(MSGWindowParams,x,y);
+    }
+
+    /**
+     * 将消息悬浮窗从屏幕上移除。
+     *
+     * @param context
+     *            必须为应用程序的Context.
+     */
+    public static void removeMSGWindow(Context context) {
+        if (MSGWindow != null) {
+            WindowManager windowManager = getWindowManager(context);
+            windowManager.removeView(MSGWindow);
+            MSGWindow = null;
         }
     }
 
@@ -142,8 +189,14 @@ public class MyWindowManager {
      * @return 有悬浮窗显示在桌面上返回true，没有的话返回false。
      */
     public static boolean isWindowShowing() {
-        return smallWindow != null || bigWindow != null;
+        return smallWindow != null || bigWindow != null||MSGWindow != null;
     }
+
+    public static boolean isMSGShowing() {
+        return MSGWindow != null;
+    }
+
+
 
     /**
      * 如果WindowManager还未创建，则创建一个新的WindowManager返回。否则返回当前已创建的WindowManager。
@@ -159,56 +212,6 @@ public class MyWindowManager {
         return mWindowManager;
     }
 
-    /**
-     * 如果ActivityManager还未创建，则创建一个新的ActivityManager返回。否则返回当前已创建的ActivityManager。
-     *
-     * @param context
-     *            可传入应用程序上下文。
-     * @return ActivityManager的实例，用于获取手机可用内存。
-     */
-    private static ActivityManager getActivityManager(Context context) {
-        if (mActivityManager == null) {
-            mActivityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        }
-        return mActivityManager;
-    }
 
-    /**
-     * 计算已使用内存的百分比，并返回。
-     *
-     * @param context
-     *            可传入应用程序上下文。
-     * @return 已使用内存的百分比，以字符串形式返回。
-     */
-    public static String getUsedPercentValue(Context context) {
-        String dir = "/proc/meminfo";
-        try {
-            FileReader fr = new FileReader(dir);
-            BufferedReader br = new BufferedReader(fr, 2048);
-            String memoryLine = br.readLine();
-            String subMemoryLine = memoryLine.substring(memoryLine.indexOf("MemTotal:"));
-            br.close();
-            long totalMemorySize = Integer.parseInt(subMemoryLine.replaceAll("\\D+", ""));
-            long availableSize = getAvailableMemory(context) / 1024;
-            int percent = (int) ((totalMemorySize - availableSize) / (float) totalMemorySize * 100);
-            return percent + "%";
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "悬浮窗";
-    }
-
-    /**
-     * 获取当前可用内存，返回数据以字节为单位。
-     *
-     * @param context
-     *            可传入应用程序上下文。
-     * @return 当前可用内存。
-     */
-    private static long getAvailableMemory(Context context) {
-        ActivityManager.MemoryInfo mi = new ActivityManager.MemoryInfo();
-        getActivityManager(context).getMemoryInfo(mi);
-        return mi.availMem;
-    }
 
 }

@@ -5,9 +5,16 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.AnimationDrawable;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,7 +29,7 @@ import com.demo.floatwindowdemo.R;
 import java.lang.reflect.Field;
 
 /**
- * Created by Administrator on 2016/3/16.
+ * Created by Lxr on 2016/3/16.
  */
 public class FloatWindowSmallView extends LinearLayout {
 
@@ -107,6 +114,7 @@ public class FloatWindowSmallView extends LinearLayout {
     private AnimationDrawable runFrame;
     private ValueAnimator runAnim;
 
+    private String title,text;
 
 
     public FloatWindowSmallView(Context context) {
@@ -127,6 +135,7 @@ public class FloatWindowSmallView extends LinearLayout {
         screenWidth = dm.widthPixels;
         screenHeight = dm.heightPixels - getStatusBarHeight();
 
+        LocalBroadcastManager.getInstance(context).registerReceiver(onNotice, new IntentFilter("Msg"));
         isHide = false;
 
     }
@@ -186,6 +195,8 @@ public class FloatWindowSmallView extends LinearLayout {
         }
         return true;
     }
+
+
 
     private void hideLeft() {
         isHide = true;
@@ -335,5 +346,52 @@ public class FloatWindowSmallView extends LinearLayout {
             }
         }
         return statusBarHeight;
+    }
+
+    /**
+     * 监听微信消息
+     */
+    private BroadcastReceiver onNotice= new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            title = intent.getStringExtra("title");
+            text = intent.getStringExtra("text");
+            Log.d("title", title);
+            Log.d("text",text);
+            MyWindowManager.createMSGWindow(context, text, mParams.x, mParams.y);
+            System.out.println(mParams.y);
+            MyWindowManager.removeSmallWindow(context);
+            MyWindowManager.removeBigWindow(context);
+            new Thread(new MyThread()).start();
+
+
+
+
+        }
+    };
+
+    private Handler msghandler = new Handler() {
+        public void handleMessage(Message msg) {
+            if(msg.what == 0x123){
+                MyWindowManager.removeMSGWindow(getContext());
+            }
+        }
+    };
+
+    public class MyThread implements Runnable {
+        @Override
+        public void run() {
+            // TODO Auto-generated method stub
+            try {
+                Thread.sleep(2000);
+                Message message = new Message();
+                message.what = 0x123;
+                msghandler.sendMessage(message);// 发送消息
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
     }
 }
