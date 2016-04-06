@@ -9,9 +9,12 @@ import java.util.TimerTask;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
+import android.app.AlertDialog;
 import android.app.Service;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
@@ -20,8 +23,10 @@ import android.graphics.Color;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.provider.Settings;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.Html;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -45,6 +50,7 @@ public class FloatWindowService extends Service {
     private Timer timer;
 
 
+
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -52,6 +58,8 @@ public class FloatWindowService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+
 
         // 开启定时器，每隔0.5秒刷新一次
         if (timer == null) {
@@ -124,4 +132,7 @@ public class FloatWindowService extends Service {
         }
         return names;
     }
+
+
+
 }
