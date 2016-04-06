@@ -116,6 +116,10 @@ public class FloatWindowSmallView extends LinearLayout {
 
     private String title,text;
 
+    private  static final boolean isLeft  = true;
+    private  static final boolean isWeChat  = true;
+
+
 
     public FloatWindowSmallView(Context context) {
         super(context);
@@ -359,7 +363,18 @@ public class FloatWindowSmallView extends LinearLayout {
             text = intent.getStringExtra("text");
             Log.d("title", title);
             Log.d("text",text);
-            MyWindowManager.createMSGWindow(context, text, mParams.x, mParams.y);
+            if(anim!=null){
+                anim.cancel();
+                runAnim.cancel();
+                runFrame.stop();
+            }
+            if(mParams.x>screenWidth/2){
+                MyWindowManager.createMSGWindow(context, text, screenWidth, mParams.y,isWeChat, false);
+            }
+            else {
+                MyWindowManager.createMSGWindow(context, text, 0, mParams.y,isWeChat, isLeft);
+            }
+
             System.out.println(mParams.y);
             MyWindowManager.removeSmallWindow(context);
             MyWindowManager.removeBigWindow(context);

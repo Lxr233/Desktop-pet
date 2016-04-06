@@ -89,14 +89,15 @@ public class MyWindowManager {
 
     /**
      * 创建一个消息悬浮窗，位置为当前小悬浮窗位置。
+     * isWeChat =true 表示是显示微信消息  false表示闹钟提醒 ，isLeft表示显示在左边还是右边
      *
      * @param context
      *            必须为应用程序的Context.
      */
-    public static void createMSGWindow(Context context,String text, int x,int y) {
+    public static void createMSGWindow(Context context,String text, int x,int y ,boolean isWeChat ,boolean isLeft) {
         WindowManager windowManager = getWindowManager(context);
         if (MSGWindow == null) {
-            MSGWindow = new FloatWindowMSGView(context,text);
+            MSGWindow = new FloatWindowMSGView(context,text,isWeChat,isLeft);
             if (MSGWindowParams == null) {
                 MSGWindowParams = new LayoutParams();
                 MSGWindowParams.type = LayoutParams.TYPE_PHONE;
