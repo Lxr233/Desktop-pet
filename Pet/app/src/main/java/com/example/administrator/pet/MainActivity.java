@@ -2,8 +2,10 @@ package com.example.administrator.pet;
 
 import android.app.AlertDialog;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -46,6 +48,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private TextView text2;
     private TextView text3;
 
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+
     private int Gray = 0xFF999999;
     public FragmentManager fManager;
 
@@ -58,6 +63,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         fManager = getSupportFragmentManager();
         initViewPager();
         initViews();
+        initSharedPreferences();
         setTab(0);
         if(!isEnabled()){
             new AlertDialog.Builder(MainActivity.this).setTitle("是否开启Notification access")//设置对话框标题
@@ -130,6 +136,22 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         fragmentsList.add(fg2);
         fragmentsList.add(fg3);
         mAdapter = new MyFragmentPagerAdapter(fManager,fragmentsList);
+    }
+
+    private void initSharedPreferences(){
+        sharedPreferences = getSharedPreferences("pet", Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+
+        //第一次登陆时的初始化
+        if(!sharedPreferences.contains("times")){
+            editor.putInt("times",1);
+            editor.putString("name1", "皮卡");
+            editor.putString("name2","鳄鱼");
+            editor.putBoolean("isSecondUnlock",false);
+            editor.putBoolean("isFirstOn",false);
+            editor.putBoolean("isSecondOn",false);
+            editor.commit();
+        }
     }
 
     public void clearChioce()
