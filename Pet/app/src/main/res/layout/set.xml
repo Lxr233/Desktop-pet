@@ -3,218 +3,134 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/white">
     <!-- 标题栏 -->
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_height="320dp"
         android:paddingTop="5sp"
         android:paddingBottom="5sp"
-        android:background="@color/sweetblue"
+        android:background="#D5001E"
         >
 
         <Button
             android:id="@+id/titlebar_bt_return"
             android:layout_width="25sp"
             android:layout_height="25sp"
-            android:layout_centerVertical="true"
+            android:layout_marginTop="13dp"
+            android:layout_marginLeft="15dp"
             android:background="@drawable/returnback"
             />
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/titlebar_bt_return"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="8sp"
-            android:text="属性设置"
-            android:textSize="25sp"
-            android:textColor="@color/black"
-            />
-        <Button
             android:id="@+id/titlebar_bt_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="8sp"
-            android:layout_centerVertical="true"
-            android:layout_marginTop="3sp"
-            android:background="@color/sweetblue"
-            android:textSize="22sp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp"
+            android:textSize="20sp"
             android:textColor="@color/black"
             android:text="保存"
             />
+        <ImageView
+            android:id="@+id/set_img"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/kong_edit"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"/>
     </RelativeLayout>
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white"
-            android:orientation="vertical">
-
-            <!--第一部分:ImageView  -->
-            <LinearLayout
-                android:id="@+id/set_ll_imagelinearlayout"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/radius_bg"
-                android:layout_marginTop="10sp"
-                android:layout_marginLeft="10sp"
-                android:layout_marginRight="10sp"
-                >
-                <ImageView
-                    android:id="@+id/set_iv_imageview"
-                    android:layout_width="200sp"
-                    android:layout_height="200sp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/qiao"
-                    android:scaleType="fitCenter"
-                    />
-            </LinearLayout>
 
             <!-- 第二部分：属性查看 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:background="@color/white" >
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:layout_margin="10sp"
-                    android:background="@drawable/radius_bg" >
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        >
-                        <TextView
-                            android:id="@+id/set_tv_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10sp"
-                            android:layout_marginLeft="20sp"
-                            android:text="昵称"
-                            android:textSize="20sp"
-                            android:textColor="@color/black"/>
-                        <EditText
-                            android:id="@+id/set_et_showname"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10sp"
-                            android:layout_toRightOf="@id/set_tv_name"
-                            android:layout_alignBaseline="@id/set_tv_name"
-                            android:textSize="20sp"
-                            android:textCursorDrawable="@drawable/color_cursor"
-                            android:textColor="@color/black"
-                            android:background="@null"/>
-                        <!--<Button
-                            android:id="@+id/set_bt_name"
-                            android:layout_width="20sp"
-                            android:layout_height="20sp"
-                            android:layout_alignBaseline="@id/set_tv_showname"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginRight="10sp"
-                            android:background="@drawable/edit"/>
-                            -->
-                    </RelativeLayout>
-                    <View
-                        android:layout_width="fill_parent"
-                        android:layout_height="1px"
-                        android:layout_marginTop="5sp"
-                        android:layout_marginLeft="65sp"
-                        android:layout_below="@id/set_et_showname"
-                        android:background="@color/grey" />
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        >
-                        <TextView
-                            android:id="@+id/set_tv_birthday"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10sp"
-                            android:layout_marginLeft="20sp"
-                            android:text="生日"
-                            android:textSize="20sp"
-                            android:textColor="@color/black"/>
-                        <EditText
-                            android:id="@+id/set_et_showbirthday"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10sp"
-                            android:layout_toRightOf="@id/set_tv_birthday"
-                            android:layout_alignBaseline="@id/set_tv_birthday"
-                            android:textSize="20sp"
-                            android:textCursorDrawable="@drawable/color_cursor"
-                            android:textColor="@color/black"
-                            android:background="@null"/>
-                        <Button
-                            android:id="@+id/set_bt_birthday"
-                            android:layout_width="30sp"
-                            android:layout_height="30sp"
-                            android:layout_alignBaseline="@id/set_et_showbirthday"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginRight="10sp"
-                            android:background="@drawable/edit_birthday"/>
-                    </RelativeLayout>
-                    <View
-                        android:layout_width="fill_parent"
-                        android:layout_height="1px"
-                        android:layout_marginTop="5sp"
-                        android:layout_marginLeft="65sp"
-                        android:layout_below="@id/set_et_showname"
-                        android:background="@color/grey"/>
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        >
-                        <TextView
-                            android:id="@+id/set_tv_character"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10sp"
-                            android:layout_marginLeft="20sp"
-                            android:text="个性"
-                            android:textSize="20sp"
-                            android:textColor="@color/black"/>
-                        <EditText
-                            android:id="@+id/set_et_showcharacter"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10sp"
-                            android:layout_toRightOf="@id/set_tv_character"
-                            android:layout_alignBaseline="@id/set_tv_character"
-                            android:textSize="20sp"
-                            android:textCursorDrawable="@drawable/color_cursor"
-                            android:textColor="@color/black"
-                            android:background="@null"/>
-                        <!-- <Button
-                             android:id="@+id/set_bt_character"
-                             android:layout_width="20sp"
-                             android:layout_height="20sp"
-                             android:layout_alignBaseline="@id/set_et_showcharacter"
-                             android:layout_alignParentRight="true"
-                             android:layout_marginRight="10sp"
-                             android:background="@drawable/edit"/>
-                              -->
-                    </RelativeLayout>
-                    <View
-                        android:layout_width="fill_parent"
-                        android:layout_height="1px"
-                        android:layout_marginTop="5sp"
-                        android:layout_marginLeft="65sp"
-                        android:layout_marginBottom="10sp"
-                        android:layout_below="@id/set_et_showname"
-                        android:background="@color/grey" />
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="10dp"
+        android:elevation="3dp"
+        android:background="@drawable/border"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+        <TextView
+            android:id="@+id/set_tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="23dp"
+            android:layout_marginLeft="20dp"
+            android:text="昵称"
+            android:textSize="20sp"
+            android:textColor="@color/grey"/>
+        <EditText
+            android:id="@+id/set_et_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/set_tv_name"
+            android:layout_marginTop="13dp"
+            android:textSize="20sp"
+            android:textCursorDrawable="@drawable/color_cursor"
+            android:textColor="@color/grey"
+            />
+
+        <TextView
+            android:id="@+id/set_tv_birthday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/set_tv_name"
+            android:layout_marginTop="23dp"
+            android:layout_marginLeft="20dp"
+            android:text="生日"
+            android:textSize="20sp"
+            android:textColor="@color/grey"/>
+        <EditText
+            android:id="@+id/set_et_birthday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/set_tv_birthday"
+            android:layout_below="@+id/set_et_name"
+            android:textSize="20sp"
+            android:textCursorDrawable="@drawable/color_cursor"
+            android:layout_marginTop="1dp"
+            android:textColor="@color/grey"
+            android:focusable="false"
+            />
+        <Button
+            android:id="@+id/set_bt_birthday"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="10sp"
+            android:background="@drawable/edit_birthday"
+            android:layout_above="@+id/set_tv_character"
+            android:layout_alignEnd="@+id/set_et_birthday" />
+
+        <TextView
+            android:id="@+id/set_tv_character"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/set_tv_birthday"
+            android:layout_marginTop="23dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="20dp"
+            android:text="个性"
+            android:textSize="20sp"
+            android:textColor="@color/grey"/>
+        <EditText
+            android:id="@+id/set_et_character"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_toRightOf="@id/set_tv_character"
+            android:layout_below="@+id/set_et_birthday"
+            android:textSize="20sp"
+            android:textCursorDrawable="@drawable/color_cursor"
+            android:textColor="@color/grey"
+            />
+
+    </RelativeLayout>
 </LinearLayout>
