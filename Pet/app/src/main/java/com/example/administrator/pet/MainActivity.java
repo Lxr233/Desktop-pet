@@ -159,12 +159,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             editor.commit();
             editor.commit();
         }
-        //如果设置开机不启动，则把宠物的选择给设置为false
-        if(!sharedPreferences.getBoolean("on", false)){
-            editor.putBoolean("isFirstOn",false);
-            editor.putBoolean("isSecondOn",false);
-            editor.commit();
-        }
+
     }
 
     public void clearChioce()

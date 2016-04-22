@@ -62,6 +62,9 @@
             </intent-filter>
         </receiver>
         <receiver android:name="com.example.administrator.pet.AlarmReceiver">
+            <intent-filter>
+                <action android:name="Alarm.Receiver" />
+            </intent-filter>
         </receiver>
     </application>
 

@@ -79,6 +79,9 @@ public class SecondFragment extends Fragment {
 
                                         System.out.println(s1.get(NUM.get(j)));
                                         int n = NUM.get(j);
+                                        String task=s1.get(n);
+                                        String date =s2.get(n);
+                                        String time=s3.get(n);
                                         s1.remove(n);
 
                                         /*for(int m = 0 ; m <s1.size();m++)
@@ -90,19 +93,22 @@ public class SecondFragment extends Fragment {
                                         B.remove(n);
                                         c.remove(n);
                                         //根据闹钟id现在数据出里面查找出对应闹钟的PendingIntent编号,然后再在数据库里面删除对应闹钟记录
-                                        String SELECT_SQL="select count from alarm_task where _id="+n;
-                                        Cursor cursor=dbhelper.getReadableDatabase().rawQuery(SELECT_SQL,null);
-                                        final int index = cursor.getColumnIndex("count");
-                                        int  PID=0;
+                                       // String SELECT_SQL="select count from alarm_task where _id="+n;
+                                        Cursor cursor=dbhelper.getReadableDatabase().rawQuery("select _id,count from alarm_task where task=? and date1=? and time=?", new String[]{task, date, time});
+                                        final int index1 = cursor.getColumnIndex("_id");
+                                        final int index2 = cursor.getColumnIndex("count");
+                                        int  pid=0,id=0;
                                         if(cursor.moveToFirst()) {
-                                            PID = cursor.getInt(index);
+                                            id = cursor.getInt(index1);
+                                            pid = cursor.getInt(index2);
                                         }
-                                        String DELETE_SQL="delete from alarm_task where _id="+n;
+                                        String DELETE_SQL="delete from alarm_task where _id="+id;
                                         dbhelper.getReadableDatabase().execSQL(DELETE_SQL);
                                         //无携带数据的Intent对象
                                         Intent intent=new Intent(getActivity(),AlarmActivity.class);
+
                                         //创建PendingIntent对象
-                                        PendingIntent pi=PendingIntent.getBroadcast(getActivity(), PID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                                        PendingIntent pi=PendingIntent.getBroadcast(getActivity(), pid, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                                         //获取系统闹钟服务
                                         AlarmManager am=(AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
                                         //删除指定pi对应的闹钟时间

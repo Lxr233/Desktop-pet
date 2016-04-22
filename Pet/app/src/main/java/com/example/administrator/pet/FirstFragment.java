@@ -33,6 +33,7 @@ public class FirstFragment extends Fragment {
         second = (PetSelect)rootView.findViewById(R.id.select_2);
         third = (PetSelect)rootView.findViewById(R.id.select_3);
         fourth = (PetSelect)rootView.findViewById(R.id.select_4);
+
         init();
         setListener();
 
@@ -45,6 +46,7 @@ public class FirstFragment extends Fragment {
         super.onResume();
         first.setName(sharedPreferences.getString("name1", "皮卡"));
         first.setCheck(sharedPreferences.getBoolean("isFirstOn", false));
+
         if(sharedPreferences.getBoolean("isSecondUnlock",false)){
             second.setName(sharedPreferences.getString("name2", "鳄鱼"));
             second.setCheck(sharedPreferences.getBoolean("isSecondOn",false));
@@ -107,6 +109,7 @@ public class FirstFragment extends Fragment {
                         editor.putBoolean("isFirstOn", true);
                         editor.putBoolean("isSecondOn", false);
                         editor.commit();
+                        System.out.println(sharedPreferences.getBoolean("isFirstOn", false));
                         Intent intent = new Intent(getActivity(), FloatWindowService.class);
                         getActivity().startService(intent);
                         getActivity().finish();
@@ -114,6 +117,7 @@ public class FirstFragment extends Fragment {
                 } else {
                     editor.putBoolean("isFirstOn", false);
                     editor.commit();
+
                     Intent intent = new Intent(getActivity(), FloatWindowService.class);
                     getActivity().stopService(intent);
                 }

@@ -24,6 +24,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         msgrcv.putExtra("task", task);
         msgrcv.putExtra("date", date);
         msgrcv.putExtra("time", time);
+        System.out.println("闹钟");
         //发送局部广播
         LocalBroadcastManager.getInstance(context).sendBroadcast(msgrcv);
     }

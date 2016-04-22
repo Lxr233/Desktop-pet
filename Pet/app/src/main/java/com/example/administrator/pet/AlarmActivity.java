@@ -165,6 +165,7 @@ public class AlarmActivity extends Activity implements OnClickListener{
 				bundle.putString("date", date);
 				bundle.putString("time", time);
 				Intent intent=new Intent(AlarmActivity.this,AlarmReceiver.class);
+				intent.setAction("Alarm.Receiver");
 				//将Bundle对象封装进Intent，以便在不同组件间传递数据
 				intent.putExtras(bundle);
 				//创建PendingIntent对象
