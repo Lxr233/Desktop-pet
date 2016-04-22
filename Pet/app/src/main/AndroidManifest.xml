@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
 
     <uses-sdk
@@ -46,6 +47,7 @@
         </activity>
         <activity android:name="com.example.administrator.pet.AlarmActivity" >
         </activity>
+
         <activity android:name="com.example.administrator.pet.Bluetooth.DeviceListActivity"
             android:label="@string/select_device"
             android:theme="@android:style/Theme.Holo.Light.Dialog"
@@ -58,6 +60,8 @@
                 <!-- 指定Action的种类，即Android系统启动后第一个运行的应用程序 -->
                 <category android:name="android.intent.category.HOME" />
             </intent-filter>
+        </receiver>
+        <receiver android:name="com.example.administrator.pet.AlarmReceiver">
         </receiver>
     </application>
 

@@ -114,10 +114,11 @@ public class FloatWindowSmallView extends LinearLayout {
     private AnimationDrawable runFrame;
     private ValueAnimator runAnim;
 
-    private String title,text;
+    private String title,text,task,date,time;
 
     private  static final boolean isLeft  = true;
     private  static final boolean isWeChat  = true;
+    private  static final boolean isAlarm  = false;
 
 
 
@@ -140,6 +141,7 @@ public class FloatWindowSmallView extends LinearLayout {
         screenHeight = dm.heightPixels - getStatusBarHeight();
 
         LocalBroadcastManager.getInstance(context).registerReceiver(onNotice, new IntentFilter("Msg"));
+        LocalBroadcastManager.getInstance(context).registerReceiver(onAlarm, new IntentFilter("Alarm"));
         isHide = false;
 
     }
@@ -379,10 +381,6 @@ public class FloatWindowSmallView extends LinearLayout {
             MyWindowManager.removeSmallWindow(context);
             MyWindowManager.removeBigWindow(context);
             new Thread(new MyThread()).start();
-
-
-
-
         }
     };
 
@@ -393,6 +391,8 @@ public class FloatWindowSmallView extends LinearLayout {
             }
         }
     };
+
+
 
     public class MyThread implements Runnable {
         @Override
@@ -409,4 +409,35 @@ public class FloatWindowSmallView extends LinearLayout {
             }
         }
     }
+
+    /**
+     * 监听闹钟消息
+     */
+    private BroadcastReceiver onAlarm= new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            task = intent.getStringExtra("task");
+            date = intent.getStringExtra("date");
+            time = intent.getStringExtra("time");
+            Log.d("task", task);
+            Log.d("time",time);
+            if(anim!=null){
+                anim.cancel();
+                runAnim.cancel();
+                runFrame.stop();
+            }
+            if(mParams.x>screenWidth/2){
+                MyWindowManager.createMSGWindow(context, date+" "+time+'\n'+task, screenWidth, mParams.y,isAlarm, false);
+            }
+            else {
+                MyWindowManager.createMSGWindow(context, date+" "+time+'\n'+task, 0, mParams.y,isAlarm, isLeft);
+            }
+
+            System.out.println(mParams.y);
+            MyWindowManager.removeSmallWindow(context);
+            MyWindowManager.removeBigWindow(context);
+            new Thread(new MyThread()).start();
+        }
+    };
 }

@@ -103,12 +103,14 @@ public class FirstFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    editor.putBoolean("isFirstOn", true);
-                    editor.putBoolean("isSecondOn", false);
-                    editor.commit();
-                    Intent intent = new Intent(getActivity(), FloatWindowService.class);
-                    getActivity().startService(intent);
-                    getActivity().finish();
+                    if (!sharedPreferences.getBoolean("isFirstOn", false)) {
+                        editor.putBoolean("isFirstOn", true);
+                        editor.putBoolean("isSecondOn", false);
+                        editor.commit();
+                        Intent intent = new Intent(getActivity(), FloatWindowService.class);
+                        getActivity().startService(intent);
+                        getActivity().finish();
+                    }
                 } else {
                     editor.putBoolean("isFirstOn", false);
                     editor.commit();
@@ -123,12 +125,14 @@ public class FirstFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    editor.putBoolean("isFirstOn",false);
-                    editor.putBoolean("isSecondOn",true);
-                    editor.commit();
-                    Intent intent = new Intent(getActivity(), FloatWindowService.class);
-                    getActivity().startService(intent);
-                    getActivity().finish();
+                    if (!sharedPreferences.getBoolean("isSecondOn", false)) {
+                        editor.putBoolean("isFirstOn", false);
+                        editor.putBoolean("isSecondOn", true);
+                        editor.commit();
+                        Intent intent = new Intent(getActivity(), FloatWindowService.class);
+                        getActivity().startService(intent);
+                        getActivity().finish();
+                    }
                 }
                 else{
                     editor.putBoolean("isSecondOn",false);

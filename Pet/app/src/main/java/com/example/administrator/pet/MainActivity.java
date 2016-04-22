@@ -150,6 +150,19 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             editor.putBoolean("isSecondUnlock",false);
             editor.putBoolean("isFirstOn",false);
             editor.putBoolean("isSecondOn",false);
+            //设置界面的初始化
+            editor.putBoolean("show", true);
+            editor.putBoolean("always", true);
+            editor.putBoolean("on",false);
+            editor.putBoolean("set",true);
+            editor.putBoolean("time",false);
+            editor.commit();
+            editor.commit();
+        }
+        //如果设置开机不启动，则把宠物的选择给设置为false
+        if(!sharedPreferences.getBoolean("on", false)){
+            editor.putBoolean("isFirstOn",false);
+            editor.putBoolean("isSecondOn",false);
             editor.commit();
         }
     }

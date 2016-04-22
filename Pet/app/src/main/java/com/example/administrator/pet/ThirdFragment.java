@@ -153,22 +153,12 @@ public class ThirdFragment extends Fragment {
         Re7 = (RelativeLayout)rootView.findViewById(R.id.Re7);
         Re6_state = (TextView)rootView.findViewById(R.id.Re6_state);
 
-        preferences = getActivity().getSharedPreferences("PetSetting", Context.MODE_PRIVATE);
+        preferences = getActivity().getSharedPreferences("pet", Context.MODE_PRIVATE);
         editor = preferences.edit();
-        int t = preferences.getInt("t",0);
-        if(t==0)
-        {
-            editor.putInt("t", 1);
-            editor.putBoolean("show", true);
-            editor.putBoolean("always", true);
-            editor.putBoolean("on",true);
-            editor.putBoolean("set",true);
-            editor.putBoolean("time",false);
-            editor.commit();
-        }
+
         show = preferences.getBoolean("show",true);
         always = preferences.getBoolean("always",true);
-        on = preferences.getBoolean("on",true);
+        on = preferences.getBoolean("on",false);
         set = preferences.getBoolean("set",true);
         time = preferences.getBoolean("time",false);
 
