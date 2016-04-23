@@ -66,26 +66,26 @@ public class AlarmActivity extends Activity implements OnClickListener{
 		View tab_time=this.getLayoutInflater().inflate(R.layout.tabwidget, null);
 		TextView tv_time=(TextView)tab_time.findViewById(R.id.tab_label);
 		tv_time.setText("时间");
-		//获取该activity里面的TabHost对象
-		tabhost=(TabHost)findViewById(R.id.tabhost);
-		tabhost.setup();
-		//创建第一个Tab页
-		TabSpec tab1=tabhost.newTabSpec("tab1").setIndicator(tab_date).setContent(R.id.alarmset_ll_tab01);
-		tabhost.addTab(tab1);
-		//创建第二个Tab页
-		TabSpec tab2=tabhost.newTabSpec("tab2").setIndicator(tab_time).setContent(R.id.alarmset_ll_tab02);
-		tabhost.addTab(tab2);
-		tabhost.setCurrentTabByTag("tab1"); // 设置第一次打开时默认显示的标签
-		updateTab(tabhost);//初始化Tab的颜色，和字体的颜色
-		tabhost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
-
-			@Override
-			public void onTabChanged(String tabId) {
-				// TODO Auto-generated method stub
-				tabhost.setCurrentTabByTag(tabId);
-				updateTab(tabhost);
-			}
-		});
+//		//获取该activity里面的TabHost对象
+//		tabhost=(TabHost)findViewById(R.id.tabhost);
+//		tabhost.setup();
+//		//创建第一个Tab页
+//		TabSpec tab1=tabhost.newTabSpec("tab1").setIndicator(tab_date).setContent(R.id.alarmset_ll_tab01);
+//		tabhost.addTab(tab1);
+//		//创建第二个Tab页
+//		TabSpec tab2=tabhost.newTabSpec("tab2").setIndicator(tab_time).setContent(R.id.alarmset_ll_tab02);
+//		tabhost.addTab(tab2);
+//		tabhost.setCurrentTabByTag("tab1"); // 设置第一次打开时默认显示的标签
+//		updateTab(tabhost);//初始化Tab的颜色，和字体的颜色
+//		tabhost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+//
+//			@Override
+//			public void onTabChanged(String tabId) {
+//				// TODO Auto-generated method stub
+//				tabhost.setCurrentTabByTag(tabId);
+//				updateTab(tabhost);
+//			}
+//		});
 		calendarview=(CalendarView)findViewById(R.id.alarmset_cv_calendarset);
 		timepicker=(TimePicker)findViewById(R.id.alarmset_tp_timeset);
 		timepicker.setIs24HourView(true);
