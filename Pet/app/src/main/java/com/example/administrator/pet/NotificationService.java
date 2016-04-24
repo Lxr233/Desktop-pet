@@ -37,10 +37,10 @@ public class NotificationService extends NotificationListenerService {
         String title = extras.getString("android.title");
         String text = extras.getCharSequence("android.text").toString();
 
-//        Log.i("Package", pack);
-//        Log.i("Ticker", ticker);
-//        Log.i("Title", title);
-//        Log.i("Text", text);
+        Log.i("Package", pack);
+        Log.i("Ticker", ticker);
+        Log.i("Title", title);
+        Log.i("Text", text);
 
         if(pack.equals("com.tencent.mm"))
         {
