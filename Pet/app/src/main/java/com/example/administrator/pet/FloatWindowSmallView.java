@@ -2,12 +2,18 @@ package com.example.administrator.pet;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,14 +21,13 @@ import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.demo.floatwindowdemo.R;
 
 import java.lang.reflect.Field;
 
 /**
- * Created by Administrator on 2016/3/16.
+ * Created by Lxr on 2016/3/16.
  */
 public class FloatWindowSmallView extends LinearLayout {
 
@@ -107,6 +112,15 @@ public class FloatWindowSmallView extends LinearLayout {
     private AnimationDrawable runFrame;
     private ValueAnimator runAnim;
 
+    private String title,text,task,date,time;
+
+    private  static final boolean isLeft  = true;
+    private  static final boolean isWeChat  = true;
+    private  static final boolean isAlarm  = false;
+
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+
 
 
     public FloatWindowSmallView(Context context) {
@@ -119,7 +133,16 @@ public class FloatWindowSmallView extends LinearLayout {
         img = (ImageView) findViewById(R.id.img_small);
         imgWidth = img.getLayoutParams().width;
         imgHeigth = img.getLayoutParams().height;
-        img.setBackgroundResource(R.drawable.pika);
+        sharedPreferences = context.getSharedPreferences("pet", Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+
+        if(sharedPreferences.getBoolean("isFirstOn", true)){
+            img.setBackgroundResource(R.drawable.pika_window);
+        }
+        else if(sharedPreferences.getBoolean("isSecondOn", true)){
+            img.setBackgroundResource(R.drawable.kong_window);
+        }
+
 
         //获取屏幕大小
         DisplayMetrics dm = new DisplayMetrics();
@@ -127,6 +150,8 @@ public class FloatWindowSmallView extends LinearLayout {
         screenWidth = dm.widthPixels;
         screenHeight = dm.heightPixels - getStatusBarHeight();
 
+        LocalBroadcastManager.getInstance(context).registerReceiver(onNotice, new IntentFilter("Msg"));
+        LocalBroadcastManager.getInstance(context).registerReceiver(onAlarm, new IntentFilter("Alarm"));
         isHide = false;
 
     }
@@ -187,6 +212,8 @@ public class FloatWindowSmallView extends LinearLayout {
         return true;
     }
 
+
+
     private void hideLeft() {
         isHide = true;
         img.setBackgroundResource(R.drawable.pika_hide_left);
@@ -220,7 +247,7 @@ public class FloatWindowSmallView extends LinearLayout {
             windowManager.updateViewLayout(this, mParams);
 
         } else if (!isPressed) {
-            img.setBackgroundResource(R.drawable.pika);
+            img.setBackgroundResource(R.drawable.pika_window);
         }
     }
 
@@ -284,9 +311,9 @@ public class FloatWindowSmallView extends LinearLayout {
 
                 //帧动画播放
                 if(endX == 0)
-                    img.setBackgroundResource(R.drawable.walk_left);
+                    img.setBackgroundResource(R.drawable.pika_walk_left);
                 else
-                    img.setBackgroundResource(R.drawable.walk_right);
+                    img.setBackgroundResource(R.drawable.pika_walk_right);
                 runFrame = (AnimationDrawable) img.getBackground();
                 runFrame.start();
 
@@ -307,7 +334,7 @@ public class FloatWindowSmallView extends LinearLayout {
                     public void onAnimationEnd(Animator animation) {
 
                         runFrame.stop();
-                        img.setBackgroundResource(R.drawable.pika);
+                        img.setBackgroundResource(R.drawable.pika_window);
                     }
                 });
             }
@@ -336,4 +363,91 @@ public class FloatWindowSmallView extends LinearLayout {
         }
         return statusBarHeight;
     }
+
+    /**
+     * 监听微信消息
+     */
+    private BroadcastReceiver onNotice= new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            title = intent.getStringExtra("title");
+            text = intent.getStringExtra("text");
+            Log.d("title", title);
+            Log.d("text",text);
+            if(anim!=null){
+                anim.cancel();
+                runAnim.cancel();
+                runFrame.stop();
+            }
+            if(mParams.x>screenWidth/2){
+                MyWindowManager.createMSGWindow(context, "  "+text, screenWidth, mParams.y,isWeChat, false);
+            }
+            else {
+                MyWindowManager.createMSGWindow(context, "  "+text, 0, mParams.y,isWeChat, isLeft);
+            }
+
+            System.out.println(mParams.y);
+            MyWindowManager.removeSmallWindow(context);
+            MyWindowManager.removeBigWindow(context);
+            new Thread(new MyThread()).start();
+        }
+    };
+
+    private Handler msghandler = new Handler() {
+        public void handleMessage(Message msg) {
+            if(msg.what == 0x123){
+                MyWindowManager.removeMSGWindow(getContext());
+            }
+        }
+    };
+
+
+
+    public class MyThread implements Runnable {
+        @Override
+        public void run() {
+            // TODO Auto-generated method stub
+            try {
+                Thread.sleep(2000);
+                Message message = new Message();
+                message.what = 0x123;
+                msghandler.sendMessage(message);// 发送消息
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * 监听闹钟消息
+     */
+    private BroadcastReceiver onAlarm= new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            task = intent.getStringExtra("task");
+            date = intent.getStringExtra("date");
+            time = intent.getStringExtra("time");
+            Log.d("task", task);
+            Log.d("time",time);
+            if(anim!=null){
+                anim.cancel();
+                runAnim.cancel();
+                runFrame.stop();
+            }
+            if(mParams.x>screenWidth/2){
+                MyWindowManager.createMSGWindow(context, date+" "+time+'\n'+task, screenWidth, mParams.y,isAlarm, false);
+            }
+            else {
+                MyWindowManager.createMSGWindow(context, date+" "+time+'\n'+task, 0, mParams.y,isAlarm, isLeft);
+            }
+
+            System.out.println(mParams.y);
+            MyWindowManager.removeSmallWindow(context);
+            MyWindowManager.removeBigWindow(context);
+            new Thread(new MyThread()).start();
+        }
+    };
 }

@@ -3,7 +3,7 @@ package com.example.administrator.pet;
 import android.animation.TypeEvaluator;
 
 /**
- * Created by Administrator on 2016/3/20.
+ * Created by Lxr on 2016/3/20.
  */
 public class animEvaluator implements TypeEvaluator {
     @Override

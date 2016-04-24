@@ -2,6 +2,7 @@ package com.example.administrator.pet;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -10,7 +11,7 @@ import android.widget.LinearLayout;
 import com.demo.floatwindowdemo.R;
 
 /**
- * Created by Administrator on 2016/3/16.
+ * Created by Lxr on 2016/3/16.
  */
 public class FloatWindowBigView extends LinearLayout {
 
@@ -24,10 +25,15 @@ public class FloatWindowBigView extends LinearLayout {
      */
     public static int viewHeight;
 
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+
     public FloatWindowBigView(final Context context) {
         super(context);
         LayoutInflater.from(context).inflate(R.layout.float_window_big, this);
         View view = findViewById(R.id.big_window_layout);
+        sharedPreferences = getContext().getSharedPreferences("pet", Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
         viewWidth = view.getLayoutParams().width;
         viewHeight = view.getLayoutParams().height;
         Button close = (Button) findViewById(R.id.close);
@@ -38,6 +44,9 @@ public class FloatWindowBigView extends LinearLayout {
                 // 点击关闭悬浮窗的时候，移除所有悬浮窗，并停止Service
                 MyWindowManager.removeBigWindow(context);
                 MyWindowManager.removeSmallWindow(context);
+                editor.putBoolean("isFirstOn", false);
+                editor.putBoolean("isSecondOn", false);
+                editor.commit();
                 Intent intent = new Intent(getContext(), FloatWindowService.class);
                 context.stopService(intent);
             }
