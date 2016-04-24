@@ -23,6 +23,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.demo.floatwindowdemo.R;
+import com.example.administrator.pet.Bluetooth.BluetoothChatService;
+import com.example.administrator.pet.Bluetooth.DeviceListActivity;
 //import com.example.pet201644.Bluetooth.BluetoothChatService;
 //import com.example.pet201644.Bluetooth.DeviceListActivity;
 
@@ -57,7 +59,7 @@ public class ThirdFragment extends Fragment {
     // Local Bluetooth adapter
     private BluetoothAdapter mBluetoothAdapter = null;
     // Member object for the chat services
-//    private BluetoothChatService mChatService = null;
+    private BluetoothChatService mChatService = null;
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState)
@@ -100,39 +102,39 @@ public class ThirdFragment extends Fragment {
             }
         });
 
-//        Re6.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // Get local Bluetooth adapter
-//                mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-//                // If the adapter is null, then Bluetooth is not supported
-//                if (mBluetoothAdapter == null) {
-//                    Toast.makeText(getActivity(), "Bluetooth is not available", Toast.LENGTH_LONG).show();
-//                    return;
-//                } else {
-//                    // If BT is not on, request that it be enabled.
-//                    // setupChat() will then be called during onActivityResult
-//                    if (!mBluetoothAdapter.isEnabled()) {
-//                        Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-//                        startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
-//                        // Otherwise, setup the chat session
-//                    } else {
-//                        if (mChatService == null) setupChat();
-//                    }
-//                    if (mChatService != null) {
-//                        // Only if the state is STATE_NONE, do we know that we haven't started already
-//                        if (mChatService.getState() == BluetoothChatService.STATE_NONE) {
-//                            // Start the Bluetooth chat services
-//                            mChatService.start();
-//                        }
-//                    }
-//                    Intent serverIntent = new Intent(getActivity(), DeviceListActivity.class);
-//                    startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE_SECURE);
-//
-//
-//                }
-//            }
-//        });
+        Re6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Get local Bluetooth adapter
+                mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+                // If the adapter is null, then Bluetooth is not supported
+                if (mBluetoothAdapter == null) {
+                    Toast.makeText(getActivity(), "Bluetooth is not available", Toast.LENGTH_LONG).show();
+                    return;
+                } else {
+                    // If BT is not on, request that it be enabled.
+                    // setupChat() will then be called during onActivityResult
+                    if (!mBluetoothAdapter.isEnabled()) {
+                        Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                        startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
+                        // Otherwise, setup the chat session
+                    } else {
+                        if (mChatService == null) setupChat();
+                    }
+                    if (mChatService != null) {
+                        // Only if the state is STATE_NONE, do we know that we haven't started already
+                        if (mChatService.getState() == BluetoothChatService.STATE_NONE) {
+                            // Start the Bluetooth chat services
+                            mChatService.start();
+                        }
+                    }
+                    Intent serverIntent = new Intent(getActivity(), DeviceListActivity.class);
+                    startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE_SECURE);
+
+
+                }
+            }
+        });
 
         return rootView;
     }
@@ -169,78 +171,79 @@ public class ThirdFragment extends Fragment {
         Switch_time.setChecked(time);
 
     }
-//    private void setupChat() {
-//
-//        // Initialize the BluetoothChatService to perform bluetooth connections
-//        mChatService = new BluetoothChatService(getActivity(), mHandler);
-//    }
-//    // The Handler that gets information back from the BluetoothChatService
-//    private final Handler mHandler = new Handler() {
-//        @Override
-//        public void handleMessage(Message msg) {
-//            switch (msg.what) {
-//                case MESSAGE_STATE_CHANGE:
-//                    switch (msg.arg1) {
-//                        case BluetoothChatService.STATE_CONNECTED:
-//                            Re6_state.setText(getString(R.string.title_connected_to, mConnectedDeviceName));
-//                            Petpair();
-//                            break;
-//                        case BluetoothChatService.STATE_CONNECTING:
-//                            Re6_state.setText(R.string.title_connecting);
-//                            break;
-//                        case BluetoothChatService.STATE_LISTEN:
-//                        case BluetoothChatService.STATE_NONE:
-//                            Re6_state.setText(R.string.title_not_connected);
-//                            break;
-//                    }
-//                    break;
-//                case MESSAGE_DEVICE_NAME:
-//                    // save the connected device's name
-//                    mConnectedDeviceName = msg.getData().getString(DEVICE_NAME);
-//                    Toast.makeText(getActivity().getApplicationContext(), "Connected to "
-//                            + mConnectedDeviceName, Toast.LENGTH_SHORT).show();
-//                    break;
-//                case MESSAGE_TOAST:
-//                    Toast.makeText(getActivity().getApplicationContext(), msg.getData().getString(TOAST),
-//                            Toast.LENGTH_SHORT).show();
-//                    break;
-//            }
-//        }
-//    };
-//    //用于宠物配对
-//    private void Petpair()
-//    {
-//        Toast toast=Toast.makeText(getActivity().getApplicationContext(), "宠物配对成功！", Toast.LENGTH_SHORT);
-//        toast.show();
-//
-//    }
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        switch (requestCode) {
-//            case REQUEST_CONNECT_DEVICE_SECURE:
-//                // When DeviceListActivity returns with a device to connect
-//                if (resultCode == Activity.RESULT_OK) {
-//                    connectDevice(data, true);
-//                }
-//                break;
-//            case REQUEST_ENABLE_BT:
-//                // When the request to enable Bluetooth returns
-//                if (resultCode == Activity.RESULT_OK) {
-//                    // Bluetooth is now enabled, so set up a chat session
-//                    setupChat();
-//                } else {
-//                    // User did not enable Bluetooth or an error occurred
-//                    Toast.makeText(getActivity(), R.string.bt_not_enabled_leaving, Toast.LENGTH_SHORT).show();
-//                }
-//        }
-//    }
-//    private void connectDevice(Intent data, boolean secure) {
-//        // Get the device MAC address
-//        String address = data.getExtras()
-//                .getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
-//        // Get the BluetoothDevice object
-//        BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
-//        // Attempt to connect to the device
-//        mChatService.connect(device, secure);
-//    }
+    private void setupChat() {
+
+        // Initialize the BluetoothChatService to perform bluetooth connections
+        mChatService = new BluetoothChatService(getActivity(), mHandler);
+    }
+    // The Handler that gets information back from the BluetoothChatService
+    private final Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MESSAGE_STATE_CHANGE:
+                    switch (msg.arg1) {
+                        case BluetoothChatService.STATE_CONNECTED:
+                            Re6_state.setText(getString(R.string.title_connected_to, mConnectedDeviceName));
+                            Petpair();
+                            break;
+                        case BluetoothChatService.STATE_CONNECTING:
+                            Re6_state.setText(R.string.title_connecting);
+                            break;
+                        case BluetoothChatService.STATE_LISTEN:
+                        case BluetoothChatService.STATE_NONE:
+                            Re6_state.setText(R.string.title_not_connected);
+                            break;
+                    }
+                    break;
+                case MESSAGE_DEVICE_NAME:
+                    // save the connected device's name
+                    mConnectedDeviceName = msg.getData().getString(DEVICE_NAME);
+                    Toast.makeText(getActivity().getApplicationContext(), "Connected to "
+                            + mConnectedDeviceName, Toast.LENGTH_SHORT).show();
+                    break;
+                case MESSAGE_TOAST:
+                    Toast.makeText(getActivity().getApplicationContext(), msg.getData().getString(TOAST),
+                            Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+    };
+    //用于宠物配对
+    private void Petpair()
+    {
+        Toast toast=Toast.makeText(getActivity().getApplicationContext(), "宠物配对成功！", Toast.LENGTH_SHORT);
+        toast.show();
+        editor.putBoolean("isSecondUnlock",true);
+        editor.commit();
+    }
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_CONNECT_DEVICE_SECURE:
+                // When DeviceListActivity returns with a device to connect
+                if (resultCode == Activity.RESULT_OK) {
+                    connectDevice(data, true);
+                }
+                break;
+            case REQUEST_ENABLE_BT:
+                // When the request to enable Bluetooth returns
+                if (resultCode == Activity.RESULT_OK) {
+                    // Bluetooth is now enabled, so set up a chat session
+                    setupChat();
+                } else {
+                    // User did not enable Bluetooth or an error occurred
+                    Toast.makeText(getActivity(), R.string.bt_not_enabled_leaving, Toast.LENGTH_SHORT).show();
+                }
+        }
+    }
+    private void connectDevice(Intent data, boolean secure) {
+        // Get the device MAC address
+        String address = data.getExtras()
+                .getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
+        // Get the BluetoothDevice object
+        BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
+        // Attempt to connect to the device
+        mChatService.connect(device, secure);
+    }
 }
 

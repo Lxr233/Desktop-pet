@@ -2,13 +2,12 @@ package com.example.administrator.pet;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Handler;
 import android.os.Message;
@@ -22,7 +21,6 @@ import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.demo.floatwindowdemo.R;
 
@@ -120,6 +118,9 @@ public class FloatWindowSmallView extends LinearLayout {
     private  static final boolean isWeChat  = true;
     private  static final boolean isAlarm  = false;
 
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+
 
 
     public FloatWindowSmallView(Context context) {
@@ -132,7 +133,16 @@ public class FloatWindowSmallView extends LinearLayout {
         img = (ImageView) findViewById(R.id.img_small);
         imgWidth = img.getLayoutParams().width;
         imgHeigth = img.getLayoutParams().height;
-        img.setBackgroundResource(R.drawable.pika_window);
+        sharedPreferences = context.getSharedPreferences("pet", Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+
+        if(sharedPreferences.getBoolean("isFirstOn", true)){
+            img.setBackgroundResource(R.drawable.pika_window);
+        }
+        else if(sharedPreferences.getBoolean("isSecondOn", true)){
+            img.setBackgroundResource(R.drawable.kong_window);
+        }
+
 
         //获取屏幕大小
         DisplayMetrics dm = new DisplayMetrics();
@@ -301,9 +311,9 @@ public class FloatWindowSmallView extends LinearLayout {
 
                 //帧动画播放
                 if(endX == 0)
-                    img.setBackgroundResource(R.drawable.walk_left);
+                    img.setBackgroundResource(R.drawable.pika_walk_left);
                 else
-                    img.setBackgroundResource(R.drawable.walk_right);
+                    img.setBackgroundResource(R.drawable.pika_walk_right);
                 runFrame = (AnimationDrawable) img.getBackground();
                 runFrame.start();
 
@@ -371,10 +381,10 @@ public class FloatWindowSmallView extends LinearLayout {
                 runFrame.stop();
             }
             if(mParams.x>screenWidth/2){
-                MyWindowManager.createMSGWindow(context, text, screenWidth, mParams.y,isWeChat, false);
+                MyWindowManager.createMSGWindow(context, "  "+text, screenWidth, mParams.y,isWeChat, false);
             }
             else {
-                MyWindowManager.createMSGWindow(context, text, 0, mParams.y,isWeChat, isLeft);
+                MyWindowManager.createMSGWindow(context, "  "+text, 0, mParams.y,isWeChat, isLeft);
             }
 
             System.out.println(mParams.y);

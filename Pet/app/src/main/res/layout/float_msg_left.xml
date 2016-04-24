@@ -33,6 +33,7 @@
         android:text="微信消息啊啊啊啊啊啊啊"
         android:layout_gravity="center"
         android:textSize="10sp"
+        android:textColor="@color/black"
         android:layout_marginEnd="8dp"
         android:layout_below="@+id/msg_title_left"
         android:layout_alignEnd="@+id/img_msg_left" />

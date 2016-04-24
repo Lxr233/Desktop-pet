@@ -33,7 +33,6 @@ public class FirstFragment extends Fragment {
         second = (PetSelect)rootView.findViewById(R.id.select_2);
         third = (PetSelect)rootView.findViewById(R.id.select_3);
         fourth = (PetSelect)rootView.findViewById(R.id.select_4);
-
         init();
         setListener();
 
@@ -44,26 +43,33 @@ public class FirstFragment extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
+
+
+        if(!sharedPreferences.getBoolean("isSecondUnlock",false))
+        {
+            second.setPetImg(R.drawable.kong_unlock);
+            second.setenabled(false);
+        }
+
+        else{
+            second.setName(sharedPreferences.getString("name2", "鳄鱼"));
+            second.setCheck(sharedPreferences.getBoolean("isSecondOn", false));
+            second.setPetImg(R.drawable.kong);
+        }
+
+
         first.setName(sharedPreferences.getString("name1", "皮卡"));
         first.setCheck(sharedPreferences.getBoolean("isFirstOn", false));
-
-        if(sharedPreferences.getBoolean("isSecondUnlock",false)){
-            second.setName(sharedPreferences.getString("name2", "鳄鱼"));
-            second.setCheck(sharedPreferences.getBoolean("isSecondOn",false));
-        }
     }
 
     private void init(){
         sharedPreferences = getActivity().getSharedPreferences("pet", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
-        second.setenabled(false);
+
         third.setenabled(false);
         fourth.setenabled(false);
         first.setPetImg(R.drawable.pika);
-        if(!sharedPreferences.getBoolean("isSecondUnlock",false))
-            second.setPetImg(R.drawable.kong_unlock);
-        else
-            second.setPetImg(R.drawable.kong);
+
         third.setPetImg(R.drawable.qiao_unlock);
         fourth.setPetImg(R.drawable.v_unlock);
 
@@ -105,6 +111,7 @@ public class FirstFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
+                    second.setCheck(false);
                     if (!sharedPreferences.getBoolean("isFirstOn", false)) {
                         editor.putBoolean("isFirstOn", true);
                         editor.putBoolean("isSecondOn", false);
@@ -129,6 +136,7 @@ public class FirstFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
+                    first.setCheck(false);
                     if (!sharedPreferences.getBoolean("isSecondOn", false)) {
                         editor.putBoolean("isFirstOn", false);
                         editor.putBoolean("isSecondOn", true);
