@@ -105,7 +105,7 @@ public class SecondFragment extends Fragment {
                                         String DELETE_SQL="delete from alarm_task where _id="+id;
                                         dbhelper.getReadableDatabase().execSQL(DELETE_SQL);
                                         //无携带数据的Intent对象
-                                        Intent intent=new Intent(getActivity(),AlarmActivity.class);
+                                        Intent intent=new Intent(getActivity(),AlarmReceiver.class);
 
                                         //创建PendingIntent对象
                                         PendingIntent pi=PendingIntent.getBroadcast(getActivity(), pid, intent, PendingIntent.FLAG_UPDATE_CURRENT);

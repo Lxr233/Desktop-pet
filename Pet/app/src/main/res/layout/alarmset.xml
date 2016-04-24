@@ -63,7 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="23sp"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textCursorDrawable="@drawable/color_cursor"
             android:layout_marginLeft="47sp"
             android:layout_marginTop="3dp"
@@ -107,7 +107,7 @@
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:orientation="vertical"
         android:background="@color/white">
         <TextView
@@ -134,7 +134,7 @@
                 android:text="日期"
                 android:textSize="20sp"
                 android:textColor="@color/grey"/>
-            <EditText
+            <TextView
                 android:id="@+id/alarm_et_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -145,8 +145,6 @@
                 android:textSize="20sp"
                 android:textCursorDrawable="@drawable/color_cursor"
                 android:textColor="@color/grey"
-                android:focusable="false"
-                android:background="@null"
                 />
             <Button
                 android:id="@+id/alarm_bt_date"
@@ -178,7 +176,7 @@
                 android:text="时间"
                 android:textSize="20sp"
                 android:textColor="@color/grey"/>
-            <EditText
+            <TextView
                 android:id="@+id/alarm_et_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -189,8 +187,6 @@
                 android:textSize="20sp"
                 android:textCursorDrawable="@drawable/color_cursor"
                 android:textColor="@color/grey"
-                android:focusable="false"
-                android:background="@null"
                 />
             <Button
                 android:id="@+id/alarm_bt_time"
@@ -216,24 +212,6 @@
             android:text="保存"
             android:textSize="20sp"/>
 
-
-        <TimePicker
-            android:id="@+id/alarmset_tp_timeset"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:timePickerMode="spinner"
-            />
-
-        <CalendarView
-            android:id="@+id/alarmset_cv_calendarset"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:selectedWeekBackgroundColor="@null"
-            android:showWeekNumber="true"
-            android:shownWeekCount="5"
-            android:firstDayOfWeek="1"
-            android:focusedMonthDateColor="@color/sweetblue"
-            />
 
     </LinearLayout>
 
