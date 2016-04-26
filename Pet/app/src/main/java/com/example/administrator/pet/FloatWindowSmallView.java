@@ -216,7 +216,13 @@ public class FloatWindowSmallView extends LinearLayout {
 
     private void hideLeft() {
         isHide = true;
-        img.setBackgroundResource(R.drawable.pika_hide_left);
+        if(sharedPreferences.getBoolean("isFirstOn", true)){
+            img.setBackgroundResource(R.drawable.pika_hide_left);
+        }
+        else if(sharedPreferences.getBoolean("isSecondOn", true)){
+            img.setBackgroundResource(R.drawable.kong_hide_left);
+        }
+
         mParams.x = 0;
         mParams.y = (int)yInScreen;
         windowManager.updateViewLayout(this, mParams);
@@ -224,7 +230,13 @@ public class FloatWindowSmallView extends LinearLayout {
 
     private void hideRight() {
         isHide = true;
-        img.setBackgroundResource(R.drawable.pika_hide_right);
+        if(sharedPreferences.getBoolean("isFirstOn", true)){
+            img.setBackgroundResource(R.drawable.pika_hide_right);
+        }
+        else if(sharedPreferences.getBoolean("isSecondOn", true)){
+            img.setBackgroundResource(R.drawable.kong_hide_right);
+        }
+
         mParams.x = screenWidth ;
         mParams.y = (int)yInScreen;
         windowManager.updateViewLayout(this, mParams);
@@ -235,19 +247,45 @@ public class FloatWindowSmallView extends LinearLayout {
      */
     private void updateViewStatus() {
         if(isHide&&isPressed) {
-            if(xInScreen>screenWidth*1/2)
-                img.setBackgroundResource(R.drawable.pika_show_right);
-            else
-                img.setBackgroundResource(R.drawable.pika_show_left);
+            if(xInScreen>screenWidth*1/2){
+                if(sharedPreferences.getBoolean("isFirstOn", true)){
+                    img.setBackgroundResource(R.drawable.pika_show_right);
+                }
+                else if(sharedPreferences.getBoolean("isSecondOn", true)){
+                    img.setBackgroundResource(R.drawable.kong_show_right);
+                }
+            }
+
+            else{
+                if(sharedPreferences.getBoolean("isFirstOn", true)){
+                    img.setBackgroundResource(R.drawable.pika_show_left);
+                }
+                else if(sharedPreferences.getBoolean("isSecondOn", true)){
+                    img.setBackgroundResource(R.drawable.kong_show_left);
+                }
+            }
+
         }
         else if (isPressed&&!isHide ) {
-            img.setBackgroundResource(R.drawable.pika_take);
+            if(sharedPreferences.getBoolean("isFirstOn", true)){
+                img.setBackgroundResource(R.drawable.pika_take);
+            }
+            else if(sharedPreferences.getBoolean("isSecondOn", true)){
+                img.setBackgroundResource(R.drawable.kong_take);
+            }
+
             mParams.x = (int)(xInScreen -2* imgWidth/3);
             mParams.y = (int)yInScreen;
             windowManager.updateViewLayout(this, mParams);
 
         } else if (!isPressed) {
-            img.setBackgroundResource(R.drawable.pika_window);
+            if(sharedPreferences.getBoolean("isFirstOn", true)){
+                img.setBackgroundResource(R.drawable.pika_window);
+            }
+            else if(sharedPreferences.getBoolean("isSecondOn", true)){
+                img.setBackgroundResource(R.drawable.kong_window);
+            }
+
         }
     }
 
@@ -310,10 +348,24 @@ public class FloatWindowSmallView extends LinearLayout {
             public void onAnimationEnd(Animator animation) {
 
                 //帧动画播放
-                if(endX == 0)
-                    img.setBackgroundResource(R.drawable.pika_walk_left);
-                else
-                    img.setBackgroundResource(R.drawable.pika_walk_right);
+                if(endX == 0){
+                    if(sharedPreferences.getBoolean("isFirstOn", true)){
+                        img.setBackgroundResource(R.drawable.pika_walk_left);
+                    }
+                    else if(sharedPreferences.getBoolean("isSecondOn", true)){
+                        img.setBackgroundResource(R.drawable.kong_walk_left);
+                    }
+                }
+
+                else{
+                    if(sharedPreferences.getBoolean("isFirstOn", true)){
+                        img.setBackgroundResource(R.drawable.pika_walk_right);
+                    }
+                    else if(sharedPreferences.getBoolean("isSecondOn", true)){
+                        img.setBackgroundResource(R.drawable.kong_walk_right);
+                    }
+                }
+
                 runFrame = (AnimationDrawable) img.getBackground();
                 runFrame.start();
 
@@ -334,7 +386,13 @@ public class FloatWindowSmallView extends LinearLayout {
                     public void onAnimationEnd(Animator animation) {
 
                         runFrame.stop();
-                        img.setBackgroundResource(R.drawable.pika_window);
+                        if(sharedPreferences.getBoolean("isFirstOn", true)){
+                            img.setBackgroundResource(R.drawable.pika_window);
+                        }
+                        else if(sharedPreferences.getBoolean("isSecondOn", true)){
+                            img.setBackgroundResource(R.drawable.kong_window);
+                        }
+
                     }
                 });
             }
@@ -343,6 +401,8 @@ public class FloatWindowSmallView extends LinearLayout {
         anim.setDuration(500);
         anim.start();
     }
+
+
 
     /**
      * 用于获取状态栏的高度。

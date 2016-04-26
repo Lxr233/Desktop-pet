@@ -2,11 +2,13 @@ package com.example.administrator.pet;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -37,23 +39,45 @@ public class FloatWindowMSGView extends RelativeLayout {
 
     private TextView content,title;
 
+    private ImageView img;
+
+    SharedPreferences sharedPreferences;
+
+
 
 
     public FloatWindowMSGView(final Context context ,String msg ,boolean isWeChat ,boolean isLeft) {
         super(context);
         windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        sharedPreferences = context.getSharedPreferences("pet", Context.MODE_PRIVATE);
         if(isLeft){
             LayoutInflater.from(context).inflate(R.layout.float_msg_left, this);
+            img =(ImageView) findViewById(R.id.img_msg_left);
             view = findViewById(R.id.msg_layout_left);
             title = (TextView)findViewById(R.id.msg_title_left);
             content = (TextView)findViewById(R.id.msg_content_left);
+            if(sharedPreferences.getBoolean("isFirstOn", true)){
+                img.setBackgroundResource(R.drawable.pika_msg_left);
+            }
+            else if(sharedPreferences.getBoolean("isSecondOn", true)){
+                img.setBackgroundResource(R.drawable.kong_msg_left);
+            }
         }
         else{
             LayoutInflater.from(context).inflate(R.layout.float_msg_right, this);
+            img =(ImageView) findViewById(R.id.img_msg_right);
             view = findViewById(R.id.msg_layout_right);
             title = (TextView)findViewById(R.id.msg_title_right);
             content = (TextView)findViewById(R.id.msg_content_right);
+            if(sharedPreferences.getBoolean("isFirstOn", true)){
+                img.setBackgroundResource(R.drawable.pika_msg_right);
+            }
+            else if(sharedPreferences.getBoolean("isSecondOn", true)){
+                img.setBackgroundResource(R.drawable.kong_msg_right);
+            }
         }
+
+
 
         viewWidth = view.getLayoutParams().width;
         viewHeight = view.getLayoutParams().height;

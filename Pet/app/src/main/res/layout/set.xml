@@ -11,7 +11,7 @@
         android:layout_height="320dp"
         android:paddingTop="5sp"
         android:paddingBottom="5sp"
-        android:background="#D5001E"
+        android:background="@color/sweetblue"
         >
 
         <Button

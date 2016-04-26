@@ -6,7 +6,7 @@
     android:paddingLeft="20dp"
     >
     <RelativeLayout
-        android:background="@drawable/kuang"
+        android:background="@drawable/border"
         android:descendantFocusability="blocksDescendants"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
