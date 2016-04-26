@@ -17,7 +17,7 @@
         android:id="@+id/toolbar_more"
         android:clickable="true"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="40dp"
+        android:layout_marginRight="10dp"
         android:layout_width="20dp"
         android:layout_height="50dp"
         android:layout_centerVertical="true">
@@ -58,7 +58,7 @@
         android:layout_height="18dp"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/toolbar_more"
-        android:layout_marginRight="40dp">
+        android:layout_marginRight="20dp">
         <View
             android:background="@drawable/toolbar_view"
             android:layout_width="18dp"
