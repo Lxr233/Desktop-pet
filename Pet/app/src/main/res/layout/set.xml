@@ -42,7 +42,7 @@
             android:layout_centerVertical="true"/>
     </RelativeLayout>
 
-            <!-- 第二部分：属性查看 -->
+    <!-- 第二部分：属性查看 -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="165dp"
@@ -116,7 +116,7 @@
             android:layout_marginRight="10dp"
             android:layout_alignBottom="@+id/set_tv_birthday"
 
-             />
+            />
         <View
             android:layout_height="1dp"
             android:layout_width="match_parent"

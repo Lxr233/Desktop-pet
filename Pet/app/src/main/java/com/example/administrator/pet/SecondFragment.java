@@ -37,6 +37,7 @@ public class SecondFragment extends Fragment {
     List<Boolean> B = new ArrayList<>();
     List<String> s2 = new ArrayList<>();
     List<String> s3 = new ArrayList<>();
+    List<String> s4 = new ArrayList<>();
     List<CheckBox> c = new ArrayList<>();
     List<Integer> NUM = new ArrayList<>();
     //MyAdapter myadapter ;
@@ -48,7 +49,7 @@ public class SecondFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_second, container, false);
         second_toolbarview = (ToolbarView) rootView.findViewById(R.id.second_toolbarview);
-        dbhelper=new MyDatabaseHelper(getActivity(), "alarm_task_manager",null, 1);
+        dbhelper=new MyDatabaseHelper(getActivity(), "alarm_task_manager1",null, 1);
         second_toolbarview.setToolbar_text("闹钟提醒");
 
         second_toolbarview.setmoreclick(new View.OnClickListener() {
@@ -82,6 +83,7 @@ public class SecondFragment extends Fragment {
                                         String task=s1.get(n);
                                         String date =s2.get(n);
                                         String time=s3.get(n);
+                                        String beizhu=s4.get(n);
                                         s1.remove(n);
 
                                         /*for(int m = 0 ; m <s1.size();m++)
@@ -90,11 +92,12 @@ public class SecondFragment extends Fragment {
                                         }*/
                                         s2.remove(n);
                                         s3.remove(n);
+                                        s4.remove(n);
                                         B.remove(n);
                                         c.remove(n);
                                         //根据闹钟id现在数据出里面查找出对应闹钟的PendingIntent编号,然后再在数据库里面删除对应闹钟记录
                                        // String SELECT_SQL="select count from alarm_task where _id="+n;
-                                        Cursor cursor=dbhelper.getReadableDatabase().rawQuery("select _id,count from alarm_task where task=? and date1=? and time=?", new String[]{task, date, time});
+                                        Cursor cursor=dbhelper.getReadableDatabase().rawQuery("select _id,count from alarm_task where task=? and addition=? and date1=? and time=?", new String[]{task,beizhu, date, time});
                                         final int index1 = cursor.getColumnIndex("_id");
                                         final int index2 = cursor.getColumnIndex("count");
                                         int  pid=0,id=0;
@@ -163,8 +166,9 @@ public class SecondFragment extends Fragment {
         Cursor cursor=dbhelper.getReadableDatabase().rawQuery(SELECT_ALL,null);
         while(cursor.moveToNext()){
             s1.add(cursor.getString(1));
-            s2.add(cursor.getString(2));
-            s3.add(cursor.getString(3));
+            s4.add(cursor.getString(2));
+            s2.add(cursor.getString(3));
+            s3.add(cursor.getString(4));
             B.add(false);
         }
 
@@ -199,11 +203,13 @@ public class SecondFragment extends Fragment {
         s1.clear();
         s2.clear();
         s3.clear();
+        s4.clear();
         B.clear();
         while(cursor.moveToNext()){
             s1.add(cursor.getString(1));
-            s2.add(cursor.getString(2));
-            s3.add(cursor.getString(3));
+            s4.add(cursor.getString(2));
+            s2.add(cursor.getString(3));
+            s3.add(cursor.getString(4));
             B.add(false);
         }
 
@@ -234,6 +240,7 @@ public class SecondFragment extends Fragment {
             LayoutInflater inflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View l = inflater.inflate(R.layout.list,null);
             TextView list_up_text = (TextView)l.findViewById(R.id.list_up_text);
+            TextView list_up_center_text = (TextView)l.findViewById(R.id.list_up_center_text);
             TextView list_down_left_text = (TextView)l.findViewById(R.id.list_down_left_text);
             TextView list_down_right_text = (TextView)l.findViewById(R.id.list_down_right_text);
             list_checkbox = (CheckBox)l.findViewById(R.id.list_checkbox);
@@ -244,6 +251,7 @@ public class SecondFragment extends Fragment {
             list_up_text.setText(s1.get(position));
             list_down_left_text.setText(s2.get(position));
             list_down_right_text.setText(s3.get(position));
+            list_up_center_text.setText(s4.get(position));
             list_checkbox.setChecked(B.get(position));
             return l;
         }

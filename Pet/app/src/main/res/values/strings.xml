@@ -1,5 +1,5 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="app_name">Pet</string>
+    <string name="app_name">桌面宠物</string>
     <string name="action_settings">Settings</string>
     <!--  BluetoothChat -->
     <string name="not_connected">You are not connected to a device</string>

@@ -41,7 +41,7 @@ public class AlarmActivity extends Activity implements OnClickListener{
 	SharedPreferences.Editor editor;
 	AlarmManager am;
 	private Button bt_back,bt_save,bt_time,bt_date;
-	private EditText et_task,et_remark;
+	private EditText et_task,et_addition;
 	private TextView tv_date,tv_time;
 	private Calendar c;
 	private MyDatabaseHelper dbhelper;
@@ -59,7 +59,7 @@ public class AlarmActivity extends Activity implements OnClickListener{
 
 	private void init(){
 		//创建数据库打开帮助类对象
-		dbhelper=new MyDatabaseHelper(AlarmActivity.this, "alarm_task_manager",null, 1);
+		dbhelper=new MyDatabaseHelper(AlarmActivity.this, "alarm_task_manager1",null, 1);
 
 		c=Calendar.getInstance();
 
@@ -72,7 +72,8 @@ public class AlarmActivity extends Activity implements OnClickListener{
 		bt_time = (Button)findViewById(R.id.alarm_bt_time);
 		bt_date = (Button)findViewById(R.id.alarm_bt_date);
 		et_task=(EditText)findViewById(R.id.alarmset_et_task);
-		et_remark=(EditText)findViewById(R.id.alarmset_et_remark);
+		et_addition=(EditText)findViewById(R.id.alarmset_et_remark);
+		tv_date.setText(c.get(Calendar.YEAR)+"年"+(c.get(Calendar.MONTH)+1)+"月"+c.get(Calendar.DAY_OF_MONTH)+"日");
 	}
 
 	private void setListener(){
@@ -122,36 +123,44 @@ public class AlarmActivity extends Activity implements OnClickListener{
 			 *1.AlarmManager注册开启闹钟，发送广播
 			 *2.保存闹钟事件至数据库
 			 */
-				preferences=this.getSharedPreferences("Counter", MODE_PRIVATE);
-				editor=preferences.edit();
-				int count=preferences.getInt("count", 1);
-				String task=et_task.getText().toString()+'\n'+et_remark.getText().toString();
-				String date=c.get(Calendar.YEAR)+"/"+(c.get(Calendar.MONTH)+1)+"/"+c.get(Calendar.DAY_OF_MONTH);
-				String time=c.get(Calendar.HOUR_OF_DAY)+":"+c.get(Calendar.MINUTE);
-				Bundle bundle=new Bundle();
-				//封装要传送的数据
-				bundle.putString("task", task);
-				bundle.putString("date", date);
-				bundle.putString("time", time);
-				Intent intent=new Intent(AlarmActivity.this,AlarmReceiver.class);
-				intent.putExtras(bundle);
-				//创建PendingIntent对象
-				PendingIntent pi=PendingIntent.getBroadcast(this, count, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-				//获取系统闹钟服务
-				am=(AlarmManager)getSystemService(ALARM_SERVICE);
-				//开启闹钟
-				System.out.println(c.getTimeInMillis());
-				am.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pi);
-				c.setTimeInMillis(System.currentTimeMillis());
-				System.out.println(c.getTimeInMillis());
-				//count自增，存入数据，提交修改
-				count++;
-				editor.putInt("count", count);
-				editor.commit();
-				//把数据插入数据库
-				dbhelper.getReadableDatabase().execSQL("insert into alarm_task values(null,?,?,?,"+count+")", new String[]{task,date,time});
-				Toast.makeText(AlarmActivity.this, "闹钟设置成功！", Toast.LENGTH_SHORT).show();
-				this.finish();
+				if(tv_time.getText().toString().equals("")){
+					Toast.makeText(AlarmActivity.this, "请设定时间", Toast.LENGTH_SHORT).show();
+				}
+				else{
+					preferences=this.getSharedPreferences("Counter", MODE_PRIVATE);
+					editor=preferences.edit();
+					int count=preferences.getInt("count", 1);
+					String task=et_task.getText().toString();
+					String addition=et_addition.getText().toString();
+					String date=c.get(Calendar.YEAR)+"/"+(c.get(Calendar.MONTH)+1)+"/"+c.get(Calendar.DAY_OF_MONTH);
+					String time=c.get(Calendar.HOUR_OF_DAY)+":"+c.get(Calendar.MINUTE);
+					Bundle bundle=new Bundle();
+					//封装要传送的数据
+					bundle.putString("task", task);
+					bundle.putString("addition", addition);
+					bundle.putString("date", date);
+					bundle.putString("time", time);
+					Intent intent=new Intent(AlarmActivity.this,AlarmReceiver.class);
+					intent.putExtras(bundle);
+					//创建PendingIntent对象
+					PendingIntent pi=PendingIntent.getBroadcast(this, count, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+					//获取系统闹钟服务
+					am=(AlarmManager)getSystemService(ALARM_SERVICE);
+					//开启闹钟
+					System.out.println(c.getTimeInMillis());
+					am.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pi);
+					c.setTimeInMillis(System.currentTimeMillis());
+					System.out.println(c.getTimeInMillis());
+					//count自增，存入数据，提交修改
+					count++;
+					editor.putInt("count", count);
+					editor.commit();
+					//把数据插入数据库
+					dbhelper.getReadableDatabase().execSQL("insert into alarm_task values(null,?,?,?,?,"+count+")", new String[]{task,addition,date,time});
+					Toast.makeText(AlarmActivity.this, "闹钟设置成功！", Toast.LENGTH_SHORT).show();
+					this.finish();
+				}
+
 				break;
 			default:break;
 

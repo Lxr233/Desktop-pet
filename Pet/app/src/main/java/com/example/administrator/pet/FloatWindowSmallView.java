@@ -112,7 +112,7 @@ public class FloatWindowSmallView extends LinearLayout {
     private AnimationDrawable runFrame;
     private ValueAnimator runAnim;
 
-    private String title,text,task,date,time;
+    private String title,text,task,date,time,addition;
 
     private  static final boolean isLeft  = true;
     private  static final boolean isWeChat  = true;
@@ -490,6 +490,7 @@ public class FloatWindowSmallView extends LinearLayout {
             task = intent.getStringExtra("task");
             date = intent.getStringExtra("date");
             time = intent.getStringExtra("time");
+            addition = intent.getStringExtra("addition");
             Log.d("task", task);
             Log.d("time",time);
             if(anim!=null){
@@ -498,10 +499,10 @@ public class FloatWindowSmallView extends LinearLayout {
                 runFrame.stop();
             }
             if(mParams.x>screenWidth/2){
-                MyWindowManager.createMSGWindow(context, date+" "+time+'\n'+task, screenWidth, mParams.y,isAlarm, false);
+                MyWindowManager.createMSGWindow(context, date+" "+time+'\n'+task+'\n'+addition, screenWidth, mParams.y,isAlarm, false);
             }
             else {
-                MyWindowManager.createMSGWindow(context, date+" "+time+'\n'+task, 0, mParams.y,isAlarm, isLeft);
+                MyWindowManager.createMSGWindow(context, date+" "+time+'\n'+task+'\n'+addition, 0, mParams.y,isAlarm, isLeft);
             }
 
             System.out.println(mParams.y);

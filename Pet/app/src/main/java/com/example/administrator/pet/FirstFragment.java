@@ -63,6 +63,9 @@ public class FirstFragment extends Fragment {
     }
 
     private void init(){
+        first_toolbarview.settoolbar_more_Visibility(View.GONE);
+        first_toolbarview.settoolbar_relative_Visibility(View.GONE);
+
         sharedPreferences = getActivity().getSharedPreferences("pet", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
 

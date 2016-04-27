@@ -6,11 +6,12 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class MyDatabaseHelper extends SQLiteOpenHelper{
-    private final String TABLE_NAME_SQL="create table alarm_task(_id integer primary key autoincrement,"+
-                                        "task varchar(100),"+
-    		                            "date1 varchar(30),"+
-                                        "time varchar(30),"+
-                                        "count integer)";
+	private final String TABLE_NAME_SQL="create table alarm_task(_id integer primary key autoincrement,"+
+			                            "task varchar(100),"+
+			                            "addition varchar(100),"+
+			                            "date1 varchar(30),"+
+			                            "time varchar(30),"+
+			                            "count integer)";
 	public MyDatabaseHelper(Context context, String name,
 			CursorFactory factory, int version) {
 		super(context, name, factory, version);
